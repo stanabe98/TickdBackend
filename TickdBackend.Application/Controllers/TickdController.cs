@@ -76,49 +76,7 @@ namespace TickdBackend.Application.Controllers
                 return BadRequest(errorResponse);
             }
 
-            //List<MeterReadingCsv> emptyList = new List<MeterReadingCsv>();
-
-            //using (TextFieldParser parser = new TextFieldParser(file.OpenReadStream()))
-            //{
-            //    parser.TextFieldType = FieldType.Delimited;
-            //    parser.SetDelimiters(",");
-
-            //    if (!parser.EndOfData)
-            //    {
-            //        parser.ReadLine();
-            //    }
-            //    // Read and parse each line of the CSV
-            //    while (!parser.EndOfData)
-            //    {
-            //        string[] fields = parser.ReadFields();
-
-            //        // Check if the row is empty or contains missing values
-            //        if (fields == null || fields.Length < 3 || 
-                        
-            //           (string.IsNullOrWhiteSpace(fields[0]) && string.IsNullOrWhiteSpace(fields[1])
-                       
-                       
-            //         ))
-            //        {
-            //            break; // Skip this row
-            //        }
-
-            //        string id = fields[0];
-            //        string date = fields[1];
-            //        string value = fields[2];
-
-            //        MeterReadingCsv meterReading = new MeterReadingCsv
-            //        {
-            //            AccountId = int.Parse(id),
-            //            MeterReadingDateTime = DateTime.Parse(date),
-            //            MeterReadValue = int.TryParse(value, out int intValue) ? intValue : (int?)null
-            //        };
-            //        emptyList.Add(meterReading);
-            //    }
-            //}
-
             List<MeterReadingCsv> recordsList = new List<MeterReadingCsv>();
-
 
             using (var streamReader = new StreamReader(file.OpenReadStream()))
             using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
@@ -129,7 +87,6 @@ namespace TickdBackend.Application.Controllers
 
                 while (csvReader.Read())
                 {
-
                     try
                     {
                         var record = csvReader.GetRecord<MeterReadingCsv>();
@@ -143,7 +100,6 @@ namespace TickdBackend.Application.Controllers
                             var dateError = new { code = 420, message = exceptionMessage };
                             return BadRequest(dateError);
                         }
-
                         var parsedFields = csvReader.Context.Reader.Parser.Record;
                         if (parsedFields != null)
                         {
@@ -151,8 +107,7 @@ namespace TickdBackend.Application.Controllers
                             {
                                 break;
                             }
-                        }
-                        var something = ex.Data;                  
+                        }            
                         var errorResponse = new { code = 430, message = "Incompatible table columns" };
                         return BadRequest(errorResponse);             
                     }
@@ -168,41 +123,6 @@ namespace TickdBackend.Application.Controllers
                 var errorResponse = new { code = 500, message = "Unknown Error" };
                 return BadRequest(errorResponse);
             }
-
-
-            //using (var reader = new StreamReader(file.OpenReadStream()))
-            //{
-            //    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            //    {
-
-
-                //        // checking if the csv files has the neccessary columns by trying to parse into an array of objects of type MeterReadingCsv
-                //        var emptyRecords = new List<MeterReadingCsv>();
-                //        try
-                //        {
-
-
-
-                //                //parsing csv
-                //                //csv.Configuration.RegisterClassMap<MeterReadingCsv>();
-                //                var records = csv.GetRecords<MeterReadingCsv>().ToList();
-                //            var response = await _tickdService.GetMeterReadings(records);
-                //            return response;
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            var exceptionMessage = ex.InnerException?.Message;
-                //            if (exceptionMessage == "Wrong Date Type")
-                //            {
-                //                var dateError = new { code = 420, message = exceptionMessage };
-                //                return BadRequest(dateError);
-                //            }
-
-                //            var errorResponse = new { code = 430, message = "Incompatible table columns" };
-                //            return BadRequest(errorResponse);
-                //        }
-                //    }
-                //}
         }
     }
 }

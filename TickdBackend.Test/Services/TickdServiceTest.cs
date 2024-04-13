@@ -35,7 +35,6 @@ namespace TickdBackend.Test.Services
                 new MeterReadingCsv { AccountId = 4, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:45:00"), MeterReadValue = 100 },
                 new MeterReadingCsv { AccountId = 5, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:30:00"), MeterReadValue = null },
             };
-            var something = mockMeterReadings;
 
             _tickdRepository.Setup(x => x.GetMeterReadingsAsync(It.IsAny<List<MeterReadingCsv>>())).ReturnsAsync((List<MeterReadingCsv> receivedReadings) =>
             {
@@ -70,7 +69,6 @@ namespace TickdBackend.Test.Services
                 new MeterReadingCsv { AccountId = 4, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:45:00"), MeterReadValue = 100 },
                 new MeterReadingCsv { AccountId = 5, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:30:00"), MeterReadValue = 200 },
             };
-            var something = mockMeterReadings;
 
             _tickdRepository.Setup(x => x.GetMeterReadingsAsync(It.IsAny<List<MeterReadingCsv>>())).ReturnsAsync((List<MeterReadingCsv> receivedReadings) =>
             {
@@ -104,7 +102,6 @@ namespace TickdBackend.Test.Services
                 new MeterReadingCsv { AccountId = 4, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:45:00"), MeterReadValue = 100 },
                 new MeterReadingCsv { AccountId = 5, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:30:00"), MeterReadValue = 200 },
             };
-            var something = mockMeterReadings;
 
             _tickdRepository.Setup(x => x.GetMeterReadingsAsync(It.IsAny<List<MeterReadingCsv>>())).ReturnsAsync((List<MeterReadingCsv> receivedReadings) =>
             {
