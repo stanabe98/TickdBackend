@@ -117,25 +117,19 @@ namespace TickdBackend.Application.Controllers
             //    }
             //}
 
-            List<MeterReadingCsv> recordsList = new List<MeterReadingCsv>();
-
-
-            using (var streamReader = new StreamReader(file.OpenReadStream()))
-            using (var csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture))
+            using (var reader = new StreamReader(file.OpenReadStream()))
             {
-
-                csvReader.Read();
-                csvReader.ReadHeader();
-
-                while (csvReader.Read())
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-
+                    // checking if the csv files has the neccessary columns by trying to parse into an array of objects of type MeterReadingCsv
+                    var emptyRecords = new List<MeterReadingCsv>();
                     try
                     {
-                        var record = csvReader.GetRecord<MeterReadingCsv>();
-                        recordsList.Add(record);
+                        var records = csv.GetRecords<MeterReadingCsv>().ToList();
+                        var response = await _tickdService.GetMeterReadings(records);
+                        return response;
                     }
-                    catch (CsvHelperException ex)
+                    catch (Exception ex)
                     {
                         var exceptionMessage = ex.InnerException?.Message;
                         if (exceptionMessage == "Wrong Date Type")
@@ -143,66 +137,11 @@ namespace TickdBackend.Application.Controllers
                             var dateError = new { code = 420, message = exceptionMessage };
                             return BadRequest(dateError);
                         }
-
-                        var parsedFields = csvReader.Context.Reader.Parser.Record;
-                        if (parsedFields != null)
-                        {
-                            if (parsedFields[0] == "" && parsedFields[1]=="" && parsedFields[1] == "")
-                            {
-                                break;
-                            }
-                        }
-                        var something = ex.Data;                  
                         var errorResponse = new { code = 430, message = "Incompatible table columns" };
-                        return BadRequest(errorResponse);             
+                        return BadRequest(errorResponse);
                     }
                 }
             }
-            try
-            {
-                var response = await _tickdService.GetMeterReadings(recordsList);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = new { code = 500, message = "Unknown Error" };
-                return BadRequest(errorResponse);
-            }
-
-
-            //using (var reader = new StreamReader(file.OpenReadStream()))
-            //{
-            //    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            //    {
-
-
-                //        // checking if the csv files has the neccessary columns by trying to parse into an array of objects of type MeterReadingCsv
-                //        var emptyRecords = new List<MeterReadingCsv>();
-                //        try
-                //        {
-
-
-
-                //                //parsing csv
-                //                //csv.Configuration.RegisterClassMap<MeterReadingCsv>();
-                //                var records = csv.GetRecords<MeterReadingCsv>().ToList();
-                //            var response = await _tickdService.GetMeterReadings(records);
-                //            return response;
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            var exceptionMessage = ex.InnerException?.Message;
-                //            if (exceptionMessage == "Wrong Date Type")
-                //            {
-                //                var dateError = new { code = 420, message = exceptionMessage };
-                //                return BadRequest(dateError);
-                //            }
-
-                //            var errorResponse = new { code = 430, message = "Incompatible table columns" };
-                //            return BadRequest(errorResponse);
-                //        }
-                //    }
-                //}
         }
     }
 }
