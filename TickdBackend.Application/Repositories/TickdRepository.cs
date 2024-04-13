@@ -69,7 +69,7 @@ namespace TickdBackend.Application.Repositories
                         }
                         existingRecord.MeterReadValue = record.MeterReadValue;
                         existingRecord.MeterReadingDateTime = record.MeterReadingDateTime.ToUniversalTime();
-                        //_context.MeterReadings.Update(existingRecord);
+                        _context.MeterReadings?.Update(existingRecord);
                         successCount++;
                     }
                 }

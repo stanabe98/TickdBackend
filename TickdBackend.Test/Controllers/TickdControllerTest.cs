@@ -57,7 +57,6 @@ namespace TickdBackend.Test.Controllers
         public async Task UploadCSV_Not_CSV_Uploaded_BadRequest()
         {
             // Arrange
-
             string csvContent = @"AccountId,MeterReadingDateTime,MeterReadValue
             1,22/04/2019 12:25:00,100
             2,22/04/2019 12:45:00,200
@@ -83,7 +82,6 @@ namespace TickdBackend.Test.Controllers
         public async Task UploadCSV_WrongDateFormat_Returns_BadRequest()
         {
             // Arrange
-
             string csvContent = @"AccountId,MeterReadingDateTime,MeterReadValue
             1,xde 12:25:00,100
             2,22/04/2019 12:45:00,200
@@ -109,7 +107,6 @@ namespace TickdBackend.Test.Controllers
         public async Task UploadCSV_IncompatibleTableColumns_Returns_BadRequest()
         {
             // Arrange
-
             string csvContent = @"Id,DateTime,ReadValue
             1,22/04/2019 12:25:00,100
             2,22/04/2019 12:45:00,200

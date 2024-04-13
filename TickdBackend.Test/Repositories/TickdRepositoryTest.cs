@@ -48,7 +48,7 @@ namespace TickdBackend.Test.Repositories
         [Test]
         public async Task GetMeterReadingsAsync_returns_some_readings_Saved()
         {
-
+            //Arrange
             var existingReadings = new List<MeterReadings>()
             {  new MeterReadings { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 200 },
                 new MeterReadings { AccountId = 2, MeterReadingDateTime = DateTime.Parse("2022-04-12 11:45:00"), MeterReadValue = 200 },
@@ -73,11 +73,13 @@ namespace TickdBackend.Test.Repositories
                 new MeterReadingCsv { AccountId = 5, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:30:00"), MeterReadValue = 200 },
             };
 
+            //Act
             _dbContext.TickdUsers.AddRange(existingAccounts.ToList());
             _dbContext.MeterReadings.AddRange(existingReadings.ToList());
             await _dbContext.SaveChangesAsync();
-
             var result = await _repository.GetMeterReadingsAsync(mockMeterReadings);
+
+            //Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.successfulReadings, Is.EqualTo(3));
         }
@@ -87,6 +89,7 @@ namespace TickdBackend.Test.Repositories
         [Test]
         public async Task GetMeterReadingsAsync_all_readings_Saved()
         {
+            //Arrange
             var existingReadings = new List<MeterReadings>()
             {  new MeterReadings { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 100 },
                 new MeterReadings { AccountId = 2, MeterReadingDateTime = DateTime.Parse("2022-04-12 11:45:00"), MeterReadValue = 200 },
@@ -111,11 +114,13 @@ namespace TickdBackend.Test.Repositories
                 new MeterReadingCsv { AccountId = 5, MeterReadingDateTime = DateTime.Parse("2022-04-12 12:30:00"), MeterReadValue = 200 },
             };
 
+            //Act
             _dbContext.TickdUsers.AddRange(existingAccounts.ToList());
             _dbContext.MeterReadings.AddRange(existingReadings.ToList());
             await _dbContext.SaveChangesAsync();
-
             var result = await _repository.GetMeterReadingsAsync(mockMeterReadings);
+
+            //Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.successfulReadings, Is.EqualTo(5));
         }
@@ -125,6 +130,7 @@ namespace TickdBackend.Test.Repositories
         [Test]
         public async Task GetMeterReadingsAsync_some_readings_Saved_inValid_accountIds()
         {
+            //Arrange
             var existingReadings = new List<MeterReadings>()
             {  new MeterReadings { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 100 },
                 new MeterReadings { AccountId = 2, MeterReadingDateTime = DateTime.Parse("2022-04-12 11:45:00"), MeterReadValue = 200 },
@@ -147,11 +153,14 @@ namespace TickdBackend.Test.Repositories
                 new MeterReadingCsv { AccountId = 8, MeterReadingDateTime = DateTime.Parse("2022-04-12 11:55:00"), MeterReadValue = 200 },
             };
 
+            //Act
             _dbContext.TickdUsers.AddRange(existingAccounts.ToList());
             _dbContext.MeterReadings.AddRange(existingReadings.ToList());
             await _dbContext.SaveChangesAsync();
 
             var result = await _repository.GetMeterReadingsAsync(mockMeterReadings);
+
+            //Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.successfulReadings, Is.EqualTo(1));
         }

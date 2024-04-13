@@ -24,6 +24,7 @@ namespace TickdBackend.Test.Services
         [Test]
         public async Task GetMeterReadings_Returns_SomeFailedReadings()
         {
+            //Arrange
             var mockMeterReadings = new List<MeterReadingCsv>()
             {
                 new MeterReadingCsv { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 100 },
@@ -45,8 +46,10 @@ namespace TickdBackend.Test.Services
                 };
             });
 
+            //Act
             var result = await _service.GetMeterReadings(mockMeterReadings);
 
+            //Assert
             Assert.That(result, Is.Not.Null);
             // Verify expected counts
             // Duplicate accountIds are not stored, as they are filtered depending on whichever record has the latest reading 
@@ -58,6 +61,7 @@ namespace TickdBackend.Test.Services
         [Test]
         public async Task GetMeterReadings_Returns_AllSaved_NoFailedReadings()
         {
+            //Arrange
             var mockMeterReadings = new List<MeterReadingCsv>()
             {
                 new MeterReadingCsv { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 100 },
@@ -77,8 +81,10 @@ namespace TickdBackend.Test.Services
                 };
             });
 
+            //Act
             var result = await _service.GetMeterReadings(mockMeterReadings);
 
+            //Assert
             Assert.That(result, Is.Not.Null);
             // Verify expected counts
             // In this case all records have unique AccounId's and are meterReadValues are all valid Integars
@@ -89,6 +95,7 @@ namespace TickdBackend.Test.Services
         [Test]
         public async Task GetMeterReadings_Returns_FailedReadings_From_Repository()
         {
+            //Arrange
             var mockMeterReadings = new List<MeterReadingCsv>()
             {
                 new MeterReadingCsv { AccountId = 1, MeterReadingDateTime = DateTime.Parse("2022-04-12 10:30:00"), MeterReadValue = 100 },
@@ -108,8 +115,10 @@ namespace TickdBackend.Test.Services
                 };
             });
 
+            //Act
             var result = await _service.GetMeterReadings(mockMeterReadings);
-
+            
+            //Assert
             Assert.That(result, Is.Not.Null);
             // Verify expected counts
             Assert.That(result.successfulReadings, Is.EqualTo(3));
