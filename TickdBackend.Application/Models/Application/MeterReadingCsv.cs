@@ -8,18 +8,16 @@ namespace TickdBackend.Application.Models.Application
 {
     public class MeterReadingCsv
     {
-        //[Name("AccountId")]
+        [Name("AccountId")]
         public int AccountId { get; set; }
 
-        //[Name("MeterReadingDateTime")]
+        [Name("MeterReadingDateTime")]
         [TypeConverter(typeof(CustomDateTimeConverter))]
         public DateTime MeterReadingDateTime { get; set; }
-        //public string MeterReadingDateTime { get; set; }=string.Empty;
 
-        //[Name("MeterReadValue")]
+        [Name("MeterReadValue")]
         [TypeConverter(typeof(CustomIntConverter))]
         public int? MeterReadValue { get; set; }
-        //public string MeterReadValue { get; set; } = string.Empty;
 
     }
 
