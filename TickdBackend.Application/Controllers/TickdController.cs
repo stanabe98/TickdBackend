@@ -103,7 +103,7 @@ namespace TickdBackend.Application.Controllers
                         var parsedFields = csvReader.Context.Reader.Parser.Record;
                         if (parsedFields != null)
                         {
-                            if (parsedFields[0] == "" && parsedFields[1]=="" && parsedFields[1] == "")
+                            if (parsedFields[0] == "" && parsedFields[1]=="" && parsedFields[2] == "")
                             {
                                 break;
                             }
